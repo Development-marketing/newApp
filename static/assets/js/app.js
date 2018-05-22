@@ -1,23 +1,38 @@
 
+
 const sessionSto = () =>{
     let hotels = JSON.parse(sessionStorage.getItem('session'));
     console.log(hotels);
-    // const container = document.getElementById("list");
-    // let newItem = document.createElement('li');
-    // newItem.textContent = 'nepe';
-
-    // container.appendChild(newItem);
-    let element  = document.createElement('li');
+    let element  = document.createElement('div');
     element.textContent = 'Hola';
     let container = document.querySelector('.content');
-    container.appendChild(element);
-    console.log(element);
+    if(container){
+        container.appendChild(element);
+        console.log(element);
+        for(let hotel of hotels){
+            allData = ` 
+                <a href="#">${hotel.name}</a>
+                <h1>$.${hotel.price}</h1>
+                <a href="http://www.booking.com.${hotel.link}">link</a>
+                <img src="${hotel.image}"></img>
+            `;
+            if(container){
+                container.insertAdjacentHTML('beforeEnd', allData);
+            }
+        }
+    }
 } 
+
 const drawDataList = e => {
     let container = document.querySelector('.content'),
     allData = '',
     hotels = e.scrapped; 
     sessionStorage.setItem('session',JSON.stringify(hotels));
+    idLogin = e.scrapped;
+    for(let idLog of idLogin){
+        console.log(idLogin[0].id);
+    //  let link = idLogin[1].link;
+    }
     for(let hotel of hotels){
         allData = ` 
             <a href="#">${hotel.name}</a>
@@ -29,17 +44,12 @@ const drawDataList = e => {
             container.insertAdjacentHTML('beforeEnd', allData);
         }
     }
-    idLogin = e.scrapped;
-    for(let idLog of idLogin){
-        console.log(idLogin[0].id);
-    //  let link = idLogin[1].link;
-    }
 }
 // // draw  in the app
   // init ajaxApi
   const searchHotel = (inputCity,inputCheckin,inputCheckout,inputRooms,inputAdults,inputChildrens,res) =>{
     let api = new XMLHttpRequest();
-    api.open('POST','http://reserveahora.herokuapp.com/api/v1/scrap');
+    api.open('POST','https://35fc66a5.ngrok.io/api/v1/scrap');
     api.setRequestHeader('Content-Type','application/json');
     sessionStorage.clear('session');
     api.onprogress = () =>{
@@ -49,6 +59,7 @@ const drawDataList = e => {
         if (api.status === 200) {
             let response = JSON.parse(api.responseText);
             drawDataList(response);
+            sessionSto();
             //   let res = idLogin[0].id;
             console.log(response);
         }
@@ -69,6 +80,13 @@ const drawDataList = e => {
       return{inputCity,inputCheckin,inputCheckout,inputRooms,inputAdults,inputChildrens};
   }
   const getEventList = () =>{ 
+        $('#sendData').click(function(e){
+            e.preventDefault();
+            setTimeout(function(){
+                window.location.href = "/listApp"    
+                console.log("listo");
+            },10000);
+        });
       document.getElementById("sendData").addEventListener("click",() =>{
           console.log(getDataList());
           let objectList = getDataList();
@@ -79,43 +97,5 @@ const drawDataList = e => {
       getEventList();
   }
 // //   searchHotel(); 
-$(function(){
-    $( "#checkin-app" ).datepicker();
-  });
-  $(function(){
-    $( "#checkout-app" ).datepicker();
-  });
 
-  $( document ).ready(function() {
-    $("#checkin-app").datepicker({    
-        defaultDate: "+0",              
-        dateFormat: "mm-dd-yy",
-        minDate: "+0",
-        onSelect: function (dateText, inst) {
-            var d = $.datepicker.parseDate(inst.settings.dateFormat, dateText);
-         d.setDate(d.getDate() + 1);
-            $("#checkout-app").val($.datepicker.formatDate(inst.settings.dateFormat, d));
-            showNew();
-       },
-      
-        onClose: function (selectedDate) {
-            $("#checkout-app").datepicker("option", "minDate", selectedDate);    
-        }
-      });
-      $("#checkout-app").datepicker({    
-        defaultDate: "+0",              
-        dateFormat: "mm-dd-yy",
-        minDate: "+0",
-        onSelect: function (dateText, inst) {
-            var d = $.datepicker.parseDate(inst.settings.dateFormat, dateText);
-         d.setDate(d.getDate() + 1);
-            $("#checkout-app").val($.datepicker.formatDate(inst.settings.dateFormat, d));
-            showNew();
-       },
-      
-        onClose: function (selectedDate) {
-            $("#checkout-app").datepicker("option", "minDate", selectedDate);    
-        }
-      });
-  });
-  sessionSto();
+sessionSto();

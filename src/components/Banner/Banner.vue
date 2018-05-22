@@ -6,7 +6,7 @@
 				<h3 class="h3-info">Encuentra ofertas para todas las temporadas</h3>
 				<p class="p-info">Desde casas acogedoras hasta modernos apartamentos</p>
 				<div class="div-father-input-from">
-					<input type="text" id="city-app" class="form-control" placeholder="¿Adónde vas?" v-model="queryString"
+					<input type="search" id="city-app" class="form-control" placeholder="¿Adónde vas?" v-model="queryString"
 					v-on:keyup="getResults()" >
 					<div class="panel-footer" v-if="citys.lenght">
 						<ul class="list-group">
@@ -23,7 +23,7 @@
 					<input type="number" id="adults-app" class="input-adults" placeholder="Adultos"  >
 					<input type="number" id="childrens-app"  class="input-childrens" placeholder="Niños">
 				</div>
-				<button type="button" id="sendData"  class="button-send" onclick="getEventList()">Enviar</button>
+				<a v-bind:href="link" id="sendData"  class="button-send" onclick="getEventList()">Enviar</a>
 				<div><img src="../../../src/images/call.png" alt="" class="call-center"></div>
 			</form>
 			<div class="div-sessionImage">
@@ -41,14 +41,17 @@
 	
 </template>
 <script>
+import listApp from '../List/List'
 export default {
   name: 'bannerApp',
   components: {
+	listApp
   },
   data(){
 	  return{
 		  queryString: '',
 		  citys: [],
+		  link:'/listApp'
 	  }
   },
   methods:{

@@ -285,7 +285,7 @@
 									</form>			
 								</div>
 								<div class="labelleft2">			
-									<a>Mabely Grand Hotel</a>
+									<router-link :to="'/detailsApp'">Mabely Grand Hotel</router-link>
 									<p class="grey">
                                     <h3>Medellín</h3>
                                     <p>Direccion</p>
